@@ -20,7 +20,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] User can now retrieve recently deleted items from the edit page, in case of mistake deletions. Only the 10 most recent items are displayed.
 
 ## Video Walkthrough
 
