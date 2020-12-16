@@ -21,7 +21,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.io.FileUtils.readLines;
+import static org.apache.commons.io.FileUtils.write;
 import static org.apache.commons.io.FileUtils.writeLines;
+import static org.apache.commons.io.FileUtils.writeStringToFile;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -30,7 +32,6 @@ public class EditActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView rvitems;
     ItemsAdapter itemsAdapter;
-    private int pos = 0;
     private  int current_item = 0;
 
     private List<String> deletions;
@@ -54,9 +55,13 @@ public class EditActivity extends AppCompatActivity {
         ItemsAdapter.OnClickListener onClickListener = new ItemsAdapter.OnClickListener() {
             @Override
             public void onItemClicked(int position) {
-                pos = position;
                 Log.d("EditActivity", "Single click at position " + position);
                 etItem.setText(deletions.get(position));
+                // Remove retrieved item from deleted list
+                deletions.remove(position);
+                itemsAdapter.notifyItemRemoved(position);
+                // Save state of most recently deleted item
+                saveItems();
             }
         };
 
@@ -75,21 +80,14 @@ public class EditActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Remove retrieved item from deleted list
-                deletions.remove(pos);
-                itemsAdapter.notifyItemRemoved(pos);
                 // Create an intent which will contain the results
                 Intent intent = new Intent();
 
                 // Pass the results of editing (data)
                 intent.putExtra(MainActivity.KEY_ITEM_TEXT, etItem.getText().toString());
                 intent.putExtra(MainActivity.KEY_ITEM_POSITION, getIntent().getExtras().getInt(MainActivity.KEY_ITEM_POSITION));
-
                 // Set the result of the intent
                 setResult(RESULT_OK, intent);
-
-                // Save state of most recently deleted item
-                saveItems();
 
                 // Finish activity, close the screen and go back
                 finish();
