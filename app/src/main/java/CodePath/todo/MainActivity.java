@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvItems;
     ItemsAdapter itemsAdapter;
     List<String> deletions = new ArrayList<>();
+    private int oldest_item = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 // Item at position is temporarily saved for retrieval in edit page
                 try {
                     writeLines(otherDataFile(), deletions);
-                    deletions.remove(position);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
             itemsAdapter.notifyItemChanged(position);
             // Persist the changes
             saveItems();
+            // Clear local deletions list since those values are most likely obsolete
+            deletions.clear();
             Toast.makeText(getApplicationContext(), "Item updated successfully!", Toast.LENGTH_SHORT).show();
         } else {
             Log.w("MainActivity", "Unknown call to onActivityResult");
@@ -135,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     // This function will load items by reading line of the data file
     private void loadItems() {
         try {
-            writeLines(otherDataFile(), deletions);
             items = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
         } catch (IOException e) {
             Log.e("MainActivity", "Error reading items", e);
