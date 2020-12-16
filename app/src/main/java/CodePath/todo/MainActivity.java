@@ -1,23 +1,28 @@
 package CodePath.todo;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.apache.commons.io.FileUtils.readLines;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     EditText etItem;
     RecyclerView rvItems;
     ItemsAdapter itemsAdapter;
+    List<String> deletions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         ItemsAdapter.OnLongClickListener onLongClickListener = new ItemsAdapter.OnLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
+                deletions.add(items.get(position));
+                // Item at position is temporarily saved for retrieval in edit page
+                try {
+                    writeLines(otherDataFile(), deletions);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 // Delete the item from the model
                 items.remove(position);
                 // Notify the adapter at which position we deleted the item
@@ -90,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private File otherDataFile() {return new File(getFilesDir(), "deletions.txt");}
 
     // Handle the result of the activity
     @Override

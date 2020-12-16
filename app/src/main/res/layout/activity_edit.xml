@@ -15,7 +15,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:text="Update" />
+        android:text="Update"
+        android:backgroundTint="@color/royal_blue"
+        android:textColor="@color/white" />
 
     <EditText
         android:id="@+id/etItem"
@@ -27,4 +29,31 @@
         android:layout_marginTop="0dp"
         android:ems="10"
         android:hint="Update the item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvitems"
+        android:layout_width="match_parent"
+        android:layout_height="637dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/etItem"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/btnSave"
+        android:text="Most recently deleted item"
+        android:gravity="center_vertical"
+        android:textStyle="italic"/>
+
 </RelativeLayout>

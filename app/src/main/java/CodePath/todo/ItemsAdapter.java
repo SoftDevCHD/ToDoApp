@@ -78,12 +78,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             tvItem.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return false;
-                }
-            });
-            tvItem.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
                     // Notify the listener which position was long pressed
                     longClickListener.onItemLongClicked(getAdapterPosition());
                     return true;
